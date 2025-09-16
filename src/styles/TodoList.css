@@ -1,16 +1,43 @@
 .todo {
   display: flex;
-  flex-direction: column; 
-  height: 100vh;          
+  flex-direction: column;
+  height: 100vh;
+  background: #f4f5f7;
+  padding: 16px;
+
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.todo .MuiList-root {
+.todo-list {
   flex-grow: 1;
-  overflow-y: auto;     
+  overflow-y: auto;
+  padding-right: 8px;
 }
 
-.add-task {
-  padding: 8px;
+.todo-item {
   background: #fff;
-  box-sizing: border-box;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  transition: background 0.2s;
+}
+
+.todo-item:hover {
+  background: #e7eaf1;
+}
+
+.actions {
+  display: flex;
+  gap: 4px;
+}
+
+.add-task-form {
+  position: sticky;
+  bottom: 0;
+  background: #f4f5f7;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.add-task-form .MuiOutlinedInput-root {
+  background: #fff;
 }
