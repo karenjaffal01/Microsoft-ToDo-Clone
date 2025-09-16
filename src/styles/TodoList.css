@@ -1,0 +1,16 @@
+.todo {
+  display: flex;
+  flex-direction: column; 
+  height: 100vh;          
+}
+
+.todo .MuiList-root {
+  flex-grow: 1;
+  overflow-y: auto;     
+}
+
+.add-task {
+  padding: 8px;
+  background: #fff;
+  box-sizing: border-box;
+}

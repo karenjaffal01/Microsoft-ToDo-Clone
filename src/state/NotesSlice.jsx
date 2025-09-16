@@ -31,8 +31,22 @@ const notesSlice = createSlice({
                     icon: ListIcon
                 }
             );
+        },
+        addNote: (state, action) => {
+            const { listId, text} = action.payload
+            state.notes.push(
+                {
+                    id:crypto.randomUUID(),
+                    listId,
+                    text,
+                    completed: false
+                }
+            )
+        },
+        setActiveList: (state, action) => {
+            state.activeListId = action.payload
         }
     }
 });
-export const { addList } = notesSlice.actions;
+export const { addList, addNote, setActiveList } = notesSlice.actions;
 export default notesSlice.reducer;
