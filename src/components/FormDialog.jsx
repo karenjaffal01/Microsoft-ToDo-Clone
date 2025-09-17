@@ -13,7 +13,7 @@ export default function FormDialog({ open, onClose, onSubmit }) {
     const formData = new FormData(event.currentTarget);
     const formJson = Object.fromEntries(formData.entries());
     const title = formJson.list;
-    onSubmit(title); //send back to parent
+    onSubmit(title); //send back to parent 
     onClose();
   };
 

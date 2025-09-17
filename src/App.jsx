@@ -5,12 +5,12 @@ import TodoList from './components/TodoList.jsx';
 
 function App() {
   return (
-    <Box className="app-container">
-      <LeftBar />
-      <Box className="main-content">
-        <TodoList />
+      <Box className="app-container">
+        <LeftBar />
+        <Box className="main-content">
+          <TodoList />
+        </Box>
       </Box>
-    </Box>
   )
 }
 

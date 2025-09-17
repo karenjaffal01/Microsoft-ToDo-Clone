@@ -13,8 +13,8 @@ import Avatar from "@mui/material/Avatar";
 import TextField from "@mui/material/TextField";
 import FormDialog from "./FormDialog.jsx";
 import IconButton from "@mui/material/IconButton";
-import { setActiveList } from "../state/NotesSlice.jsx";
-import { useDispatch } from "react-redux";
+import { setActiveList, setSearchQuery } from "../state/NotesSlice.jsx";
+import { useDispatch, useSelector } from "react-redux";
 
 export const SidebarContent = ({
   lists,
@@ -24,8 +24,8 @@ export const SidebarContent = ({
   handleAddList,
   setOpen,
 }) => {
+  const activeListId = useSelector((state) => state.notes.activeListId);
   const dispatch = useDispatch();
-
   return (
     <div className="sidebar">
       {setOpen && (
@@ -63,6 +63,7 @@ export const SidebarContent = ({
             placeholder="Search"
             type="search"
             size="small"
+            onChange={(e) => dispatch(setSearchQuery(e.target.value))}
             sx={{
               width: "90%",
               margin: "10px auto",
@@ -88,6 +89,7 @@ export const SidebarContent = ({
               text={list.title}
               icon={<IconComponent />}
               onClick={() => dispatch(setActiveList(list.id))}
+              selected = {activeListId === list.id}
             />
           );
         })}
