@@ -22,6 +22,11 @@ import DialogTitle from '@mui/material/DialogTitle';
 import EditDialog from "./EditDialog";
 import "../styles/TodoList.css";
 
+import Collapse from '@mui/material/Collapse';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import StarBorder from '@mui/icons-material/StarBorder';
+
 export default function TodoList() {
   const dispatch = useDispatch();
 
@@ -30,6 +35,11 @@ export default function TodoList() {
   const [task, setTask] = useState("");
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [noteToEdit, setNoteToEdit] = useState(null);
+  const [open, setOpen] = React.useState(true);
+
+  const handleClick = () => {
+    setOpen(!open);
+  };
 
   const handleEditClick = (note) => {
     setNoteToEdit(note);
@@ -52,6 +62,8 @@ export default function TodoList() {
   });
   const notesList = useSelector((state) => state.notes.notesList);
   const activeList = notesList.find((list) => list.id === activeListId);
+  const completedList = noteItems.filter((note) => note.isCompleted);
+  const notCompleted = noteItems.filter((note) => !note.isCompleted);
   const color = activeList.bgColor;
   const icon = activeList.icon;
   const title = activeList.title;
@@ -80,7 +92,6 @@ export default function TodoList() {
     setNoteToDelete(null);
   };
 
-
   const ListIcon = icon;
 
   return (
@@ -92,7 +103,7 @@ export default function TodoList() {
       }
       {noteItems.length == 0 && <p className='none'>No Tasks Found. Add tasks</p>}
       <List className="todo-list">
-        {noteItems.map((note, index) => {
+        {notCompleted.map((note, index) => {
           const labelId = `checkbox-list-label-${index}`;
           return (
             <ListItem
@@ -125,15 +136,84 @@ export default function TodoList() {
                   />
                 </ListItemIcon>
                 <ListItemText id={labelId} primary={note.text}
-                sx={{
-                  textDecoration: note.isCompleted ? "line-through" : "none",
-                  color: note.isCompleted ? "gray" : "inherit",
-                }} />
+                />
               </ListItemButton>
             </ListItem>
           );
         })}
       </List>
+        {completedList.length > 0 && (
+  <>
+    <div 
+      onClick={handleClick} 
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "8px 12px",
+        cursor: "pointer",
+        fontWeight: "500",
+        fontSize: "1rem",
+        backgroundColor: "transparent",
+        border: "none",
+        outline: "none",
+      }}
+    >
+      <span>Completed</span>
+      {open ? <ExpandLess /> : <ExpandMore />}
+    </div>
+
+    <Collapse in={open} timeout="auto" unmountOnExit>
+      <List>
+        {completedList.map((note, index) => {
+          const labelId = `checkbox-list-label-inbox-${index}`;
+          return (
+            <ListItem
+              key={note.id}
+              secondaryAction={
+                <div className="actions">
+                  <IconButton
+                    edge="end"
+                    aria-label="edit"
+                    onClick={() => handleEditClick(note)}
+                  >
+                    <EditOutlinedIcon />
+                  </IconButton>
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => handleDelete(note.id)}
+                  >
+                    <DeleteOutlineOutlinedIcon />
+                  </IconButton>
+                </div>
+              }
+              disablePadding
+              className="todo-item"
+            >
+              <ListItemButton
+                onClick={() => dispatch(toggleComplete(note.id))}
+                dense
+              >
+                <ListItemIcon>
+                  <Checkbox checked={note.isCompleted} />
+                </ListItemIcon>
+                <ListItemText
+                  id={labelId}
+                  primary={note.text}
+                  sx={{
+                    textDecoration: note.isCompleted ? "line-through" : "none",
+                    color: note.isCompleted ? "gray" : "inherit",
+                  }}
+                />
+              </ListItemButton>
+            </ListItem>
+          );
+        })}
+      </List>
+    </Collapse>
+  </>
+)}
       <Dialog open={deleteDialogOpen} onClose={handleCancelDelete}>
         <DialogTitle>Are you sure you want to delete this note?</DialogTitle>
         <DialogActions>
